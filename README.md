@@ -1,2 +1,2 @@
-# my_rt
-my raytracer (WIP)
+# My Raytracer based on Peter Shirley Book
+Work in Progress
