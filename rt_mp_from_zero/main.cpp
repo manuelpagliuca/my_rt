@@ -5,19 +5,19 @@
 #include <iostream>
 
 // STB_IMAGE
-#include "stb_image.h"
+#include "stb\stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "stb\stb_image_write.h"
 
 // Time Debugging
 #include <chrono>
 #include <ctime>
 
 // Project files
-#include "sphere.h"
-#include "3d_world.h"
-#include "material.h"
-#include "camera.h"
+#include "world_env\sphere.h"
+#include "world_env\3d_world.h"
+#include "world_env\material.h"
+#include "world_env\camera.h"
 
 // Prototipi
 inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
@@ -28,9 +28,9 @@ inline vec3 reflect(const vec3& v, const vec3& n);
 inline float linear_mapped(const vec3& v);
 
 //int const multi = 1;
-int const samples = 1024; // Numero di samples da usare per pixel
-int const width = 1920;	  // Righe di pixels
-int const height = 1080;  // Colonne di pixels
+int const samples = 100;  // Numero di samples da usare per pixel
+int const width = 800;	  // Righe di pixels
+int const height = 600;   // Colonne di pixels
 int const n_objects = 5;  // Numero di oggetti geometrici
 
 // Entry point
@@ -52,9 +52,9 @@ int main() {
 	Geometry* world = new World(list, n_objects);
 	
 	// Impostazione settings della videocamera
-	const vec3 lookfrom(6.0f, 8.0f, 3.0f);
-	const vec3 lookat(0.0f, 0.0f, 0.0f);
-	const float dist_to_focus = 10.0f;
+	const vec3 lookfrom(15.0f, 8.0f, 3.0f);
+	const vec3 lookat(0.0f, 2.0f, 0.0f);
+	const float dist_to_focus = 20.0f;
 	const float aperture = 0.1f;
 	
 	// Dichiarazione e allocazione della videocamera

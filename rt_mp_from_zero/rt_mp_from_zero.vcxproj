@@ -69,7 +69,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
