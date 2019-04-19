@@ -132,17 +132,3 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth)
 	}
 
 }
-
-// Interpolazione lineare di due valori (Linear Interpolation)
-inline vec3 lerp(const float t, const vec3& v0, const vec3& v1) {
-	return (1.0f - t) * v0 + t * v1;
-}
-// Interpolazione lineare di due valori (old method)
-inline vec3 lerp2(const float t, const vec3 & v0, const vec3 & v1) {
-	return v0 + t * (v1 - v0);
-}
-
-// Mapping Lineare (Linear Mapping)
-inline float linear_mapped(const vec3 & v) {
-	return 0.5f* (v.y() + 1.0f);
-}

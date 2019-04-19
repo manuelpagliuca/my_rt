@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <iostream>
 
-
 class vec3 {
 
 
@@ -107,10 +106,9 @@ inline float dot(const vec3 & v1, const vec3 & v2) {
 
 inline vec3 cross(const vec3 & v1, const vec3 & v2) {
 	return vec3((v1.e[1] * v2.e[2] - v1.e[2] * v2.e[1]),
-		(-(v1.e[0] * v2.e[2] - v1.e[2] * v2.e[0])),
-		(v1.e[0] * v2.e[1] - v1.e[1] * v2.e[0]));
+				(-(v1.e[0] * v2.e[2] - v1.e[2] * v2.e[0])),
+				(v1.e[0] * v2.e[1] - v1.e[1] * v2.e[0]));
 }
-
 
 inline vec3 & vec3::operator+=(const vec3 & v) {
 	e[0] += v.e[0];
@@ -156,15 +154,29 @@ inline vec3& vec3::operator/=(const float t) {
 	return *this;
 }
 
-/* Funzione di normalizzazione di un vettore, restituisce il suo versore */
+// Funzione di normalizzazione di un vettore, restituisce il suo versore
 inline vec3 unit_vector(const vec3 v) {
 	return v / v.length();
 }
 
-/* Gamma Correction */
+// Gamma Correction
 inline float sRGB(const float color_linear)
 {
 	return (color_linear <= 0.0031308f) ? 12.92f * color_linear : 1.055f * powf(color_linear, 1.0f / 2.4f) - 0.055f;
+}
+
+// Interpolazione lineare di due valori (Linear Interpolation)
+inline vec3 lerp(const float t, const vec3& v0, const vec3& v1) {
+	return (1.0f - t) * v0 + t * v1;
+}
+// Interpolazione lineare di due valori (old method)
+inline vec3 lerp2(const float t, const vec3 & v0, const vec3 & v1) {
+	return v0 + t * (v1 - v0);
+}
+
+// Mapping Lineare (Linear Mapping)
+inline float linear_mapped(const vec3 & v) {
+	return 0.5f* (v.y() + 1.0f);
 }
 
 #endif
