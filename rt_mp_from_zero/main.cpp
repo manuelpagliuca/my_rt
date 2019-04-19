@@ -28,13 +28,15 @@ inline vec3 reflect(const vec3& v, const vec3& n);
 inline float linear_mapped(const vec3& v);
 
 //int const multi = 1;
-int const samples = 100;  // Numero di samples da usare per pixel
+int const samples = 10;  // Numero di samples da usare per pixel
 int const width = 800;	  // Righe di pixels
 int const height = 600;   // Colonne di pixels
 int const n_objects = 5;  // Numero di oggetti geometrici
 
 // Entry point
 int main() {
+	int y;
+
 	auto start = std::chrono::system_clock::now();
 	std::vector<uint8_t> image;
 
@@ -67,8 +69,10 @@ int main() {
 
 	// Devo scandire lo schermo Riga x Colonne
 #pragma omp parallel for
-	for (int y = height - 1 ; y >= 0; y--)
+	for (y = height - 1 ; y >= 0; y--)
 	{
+		fprintf(stderr, "\rRendering (%d spp) %5.2f%%", samples, 100.0f*float(height - y)/float(height));
+
 		for (int x = 0; x < width; x++)
 		{	
 			// All'interno di questo scope si elabora un singolo pixel
@@ -93,11 +97,13 @@ int main() {
 			image.push_back(ib);
 		}
 	}
+	fprintf(stderr, "\rRendering (%d spp) %5.2f%%\n", samples, float(height - y) / float(height));
+
 	stbi_write_jpg("test.jpg", width, height, 3, image.data(), 100);
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
-	std::cout << "Elapsed seconds : " << elapsed_seconds.count() << "\n";
+	std::cout << "It tooks " << elapsed_seconds.count() << " seconds \n\n\n";
 
 	return EXIT_SUCCESS;
 }
