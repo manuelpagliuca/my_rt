@@ -21,11 +21,6 @@
 
 // Prototipi
 inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
-inline vec3 lerp(const float t, const vec3& v0, const vec3& v1);
-inline vec3 lerp2(const float t, const vec3& v0, const vec3& v1);
-inline vec3 random_in_unit_sphere();
-inline vec3 reflect(const vec3& v, const vec3& n);
-inline float linear_mapped(const vec3& v);
 
 //int const multi = 1;
 int const samples = 10;  // Numero di samples da usare per pixel

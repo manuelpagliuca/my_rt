@@ -7,7 +7,6 @@
 
 class vec3 {
 
-
 public:
 	vec3() { e[0] = 0; e[1] = 0; e[2] = 0; }
 	vec3(const float t) { e[0] = t; e[1] = t; e[2] = t; }
@@ -21,6 +20,7 @@ public:
 	inline float g() const { return e[1]; }
 	inline float b() const { return e[2]; }
 
+	// Overloading operatori
 	inline const vec3& operator+() const {
 		return *this;
 	}
@@ -37,25 +37,72 @@ public:
 		return e[i];
 	};
 
-	inline vec3& operator+=(const vec3 & v2);
-	inline vec3& operator-=(const vec3 & v2);
-	inline vec3& operator*=(const vec3 & v2);
-	inline vec3& operator/=(const vec3 & v2);
-	inline vec3& operator*=(const float t);
-	inline vec3& operator/=(const float t);
+	inline vec3& operator+=(const vec3& v) {
+		e[0] += v.e[0];
+		e[1] += v.e[1];
+		e[2] += v.e[2];
+		return *this;
+	}
 
+	inline vec3& operator*=(const vec3& v) {
+		e[0] *= v.e[0];
+		e[1] *= v.e[1];
+		e[2] *= v.e[2];
+		return *this;
+	}
+
+	inline vec3& operator/=(const vec3& v) {
+		e[0] /= v.e[0];
+		e[1] /= v.e[1];
+		e[2] /= v.e[2];
+		return *this;
+	}
+
+	inline vec3& operator-=(const vec3& v) {
+		e[0] -= v.e[0];
+		e[1] -= v.e[1];
+		e[2] -= v.e[2];
+		return *this;
+	}
+
+	inline vec3& operator*=(const float t) {
+		e[0] *= t;
+		e[1] *= t;
+		e[2] *= t;
+		return *this;
+	}
+
+	inline vec3& operator/=(const float t) {
+		float k = 1.0f / t;
+
+		e[0] *= k;
+		e[1] *= k;
+		e[2] *= k;
+		return *this;
+	}
+
+	// Metodi
 	inline float length() const {
-		return sqrt(e[0] * e[0] + e[1] * e[1] + e[2] * e[2]);
+		return sqrtf(e[0] * e[0] + e[1] * e[1] + e[2] * e[2]);
 	}
 
 	inline float squared_length() const {
 		return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
 	}
 
-	inline void make_unit_vector();
+	inline void make_unit_vector() {
+		float k = 1.0f / sqrtf(e[0] * e[0] + e[1] * e[1] + e[2] * e[2]);
+		
+		e[0] *= k;
+		e[1] *= k;
+		e[2] *= k;
+	}
+
 
 	float e[3];
 };
+
+// Funzioni
 
 inline std::istream& operator>>(std::istream & is, vec3 & t) {
 	is >> t.e[0] >> t.e[1] >> t.e[2];
@@ -65,11 +112,6 @@ inline std::istream& operator>>(std::istream & is, vec3 & t) {
 inline std::ostream& operator<<(std::ostream & os, const vec3 & t) {
 	os << t.e[0] << " " << t.e[1] << " " << t.e[2];
 	return os;
-}
-
-inline void vec3::make_unit_vector() {
-	float k = 1.0f / sqrt(e[0] * e[0] + e[1] * e[1] + e[2] * e[2]);
-	e[0] *= k; e[1] *= k; e[2] *= k;
 }
 
 inline vec3 operator+(const vec3 & v1, const vec3 & v2) {
@@ -110,50 +152,6 @@ inline vec3 cross(const vec3 & v1, const vec3 & v2) {
 				(v1.e[0] * v2.e[1] - v1.e[1] * v2.e[0]));
 }
 
-inline vec3 & vec3::operator+=(const vec3 & v) {
-	e[0] += v.e[0];
-	e[1] += v.e[1];
-	e[2] += v.e[2];
-	return *this;
-}
-
-inline vec3& vec3::operator*=(const vec3 & v) {
-	e[0] *= v.e[0];
-	e[1] *= v.e[1];
-	e[2] *= v.e[2];
-	return *this;
-}
-
-inline vec3& vec3::operator/=(const vec3 & v) {
-	e[0] /= v.e[0];
-	e[1] /= v.e[1];
-	e[2] /= v.e[2];
-	return *this;
-}
-
-inline vec3& vec3::operator-=(const vec3 & v) {
-	e[0] -= v.e[0];
-	e[1] -= v.e[1];
-	e[2] -= v.e[2];
-	return *this;
-}
-
-inline vec3& vec3::operator*=(const float t) {
-	e[0] *= t;
-	e[1] *= t;
-	e[2] *= t;
-	return *this;
-}
-
-inline vec3& vec3::operator/=(const float t) {
-	float k = 1.0f / t;
-
-	e[0] *= k;
-	e[1] *= k;
-	e[2] *= k;
-	return *this;
-}
-
 // Funzione di normalizzazione di un vettore, restituisce il suo versore
 inline vec3 unit_vector(const vec3 v) {
 	return v / v.length();
@@ -168,10 +166,6 @@ inline float sRGB(const float color_linear)
 // Interpolazione lineare di due valori (Linear Interpolation)
 inline vec3 lerp(const float t, const vec3& v0, const vec3& v1) {
 	return (1.0f - t) * v0 + t * v1;
-}
-// Interpolazione lineare di due valori (old method)
-inline vec3 lerp2(const float t, const vec3 & v0, const vec3 & v1) {
-	return v0 + t * (v1 - v0);
 }
 
 // Mapping Lineare (Linear Mapping)

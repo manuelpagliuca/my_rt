@@ -4,9 +4,9 @@
 #define RAYH
 #include "vec3.h"
 
-/* Il raggio parte dal centro della camera e con l'asse Z interseca l'immagine.
-	Modificando tramite offset gli appositi valori su gli assi X e Y si potrà ridirezionare il raggio.
-	*/
+/*	Il raggio parte dal centro della camera e con l'asse Z interseca l'immagine.
+	Modificando tramite offset gli appositi valori su gli assi X e Y si potrà ridirezionare il raggio. */
+
 class ray {
 public:
 	ray() {}
