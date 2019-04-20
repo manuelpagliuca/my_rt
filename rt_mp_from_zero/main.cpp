@@ -22,14 +22,12 @@
 // Prototipi
 inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
 
-//int const multi = 1;
-int const samples = 10;  // Numero di samples da usare per pixel
-int const width = 800;	  // Righe di pixels
-int const height = 600;   // Colonne di pixels
-int const n_objects = 5;  // Numero di oggetti geometrici
-
 // Entry point
-int main() {
+int main(void) {
+	int const samples = 10;   // Numero di samples da usare per pixel
+	int const width = 800;	  // Righe di pixels
+	int const height = 600;   // Colonne di pixels
+	int const n_objects = 8;  // Numero di oggetti geometrici
 	int y;
 
 	auto start = std::chrono::system_clock::now();
@@ -42,14 +40,17 @@ int main() {
 	list[0] = new Sphere(vec3(0.0f, 0.0f, -1.0f), 0.5f, new dielectric(1.5f)); 
 	list[1] = new Sphere(vec3(1.5f, 0.0f, -2.0f), 0.5f, new metal(vec3(0.8f, 0.3f, 0.2f)));
 	list[2] = new Sphere(vec3(-1.5f, 0.0f, -2.0f), 0.5f, new metal(vec3(0.2f, 0.5f, 0.9f)));
-	list[3] = new Sphere(vec3(0.0f, -50.5f, -1.0f), 50.0f, new lambertian(vec3(0.6f, 0.6f, 0.0f)));
-	list[4] = new Sphere(vec3(0.0f, 0.0f, 2.0f), 1.4f, new lambertian(vec3(0.0f, 0.0f, 0.0f)));
+	list[3] = new Sphere(vec3(0.0f, -50.5f, -1.0f), 50.0f, new lambertian(vec3(0.1f, 0.4f, 0.1f)));
+	list[4] = new Sphere(vec3(-2.0f, 0.8f, 0.0f), 1.4f, new lambertian(vec3(0.3f, 0.3f, 0.8f)));
+	list[5] = new Sphere(vec3(-0.8f, 1.8f, 4.0f), 2.6f, new dielectric(1.5f));  /// 2.417f
+	list[6] = new Sphere(vec3(3.0f, 0.9f, -3.0f), 1.5f, new metal(vec3(0.4f, 0.7f, 0.1f)));
+	list[7] = new Sphere(vec3(-3.0f, 2.5f, -6.0f), 3.6f, new metal(vec3(0.1f, 0.1f, 0.1f)));
 
 	// Creo un oggetto che ha il compito di contenere gli altri oggetti 3D
 	Geometry* world = new World(list, n_objects);
 	
 	// Impostazione settings della videocamera
-	const vec3 lookfrom(15.0f, 8.0f, 3.0f);
+	const vec3 lookfrom(15.0f, 3.0f, 15.0f);
 	const vec3 lookat(0.0f, 2.0f, 0.0f);
 	const float dist_to_focus = 20.0f;
 	const float aperture = 0.1f;
@@ -82,7 +83,6 @@ int main() {
 			}
 			col /= float(samples);	// Effettuo una media dei samples
 
-			// 
 			uint8_t ir = static_cast<uint8_t>(255.99f * sRGB(col.r()));	
 			uint8_t ig = static_cast<uint8_t>(255.99f * sRGB(col.g()));
 			uint8_t ib = static_cast<uint8_t>(255.99f * sRGB(col.b()));
@@ -123,7 +123,7 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth)
 	{
 		vec3 unit_direction = unit_vector(r.direction);	// Versore del raggio
 		const float t = 0.5f * (unit_direction.y() + 1.0f);
-		return (1.0f - t) * vec3(1.0f, 1.0f, 1.0f) + t * vec3(0.5f, 0.7f, 1.0f);
+		return (1.0f - t) * vec3(0.0f, 0.0f, 0.0f) + t * vec3(1.0f, 1.0f, 1.0f);
 	}
 
 }

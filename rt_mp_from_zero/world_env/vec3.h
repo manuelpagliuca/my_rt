@@ -98,7 +98,6 @@ public:
 		e[2] *= k;
 	}
 
-
 	float e[3];
 };
 
@@ -158,8 +157,7 @@ inline vec3 unit_vector(const vec3 v) {
 }
 
 // Gamma Correction
-inline float sRGB(const float color_linear)
-{
+inline float sRGB(const float color_linear) {
 	return (color_linear <= 0.0031308f) ? 12.92f * color_linear : 1.055f * powf(color_linear, 1.0f / 2.4f) - 0.055f;
 }
 
