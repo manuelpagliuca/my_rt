@@ -18,7 +18,7 @@ public:
 		direction = dir; 
 	}
 
-	// Restituisce vettore che punta lungo la linea del raggio
+	// Restituisce vettore che punta al parametro t lungo la linea del raggio
 	inline const vec3 point_at_parameter(const float t) const {
 		return origin + (direction * t); 
 	}

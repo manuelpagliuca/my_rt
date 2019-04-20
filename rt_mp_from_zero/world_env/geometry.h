@@ -9,10 +9,10 @@
 class material;
 
 struct intersec_record {
-	float t;
-	vec3 p;
-	vec3 normal;
-	material* mat_ptr;
+	float t;			// Soluzione decimale
+	vec3 p;				// Vettore che punta alla soluzione sul raggio
+	vec3 normal;		// Normale rispetto alla soluzione (perpendicolare alla superficie dell'oggetto)
+	material* mat_ptr;	// Materiale
 };
 
 // Superclasse generica per gli oggetti 3D

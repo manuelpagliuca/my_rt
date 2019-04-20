@@ -127,10 +127,13 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth)
 {
 	intersec_record record;
 
-	if (world->hit(r, 0.001f, FLT_MAX, record) == true) // Colorazione oggetto
+	if (world->hit(r, 0.001f, FLT_MAX, record)) /*	Se nel mondo avviene una intersezione tra raggio e oggetti,
+													in tal caso la condizione viene verificata e le informazioni
+													riguardanti la soluzione sono salvate sul record (passato per riferimento &) */
 	{
-		ray scattered;
-		vec3 attenuation;
+		ray scattered;		// Raggio disperso
+		vec3 attenuation;	// Attenuazione
+
 		if (depth < 50 && record.mat_ptr->scatter(r, record, attenuation, scattered))
 			return attenuation * pixelColorFunction(scattered, world, depth + 1);
 		else
@@ -138,7 +141,7 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth)
 		//vec3 target = rec.p + rec.normal + random_in_unit_sphere();
 		//return 0.5f* color(ray(rec.p, target - rec.p), world);
 	}
-	else  // Colorazione di cio che non è un oggetto
+	else // Colorazione di cio che non è un oggetto
 	{
 		vec3 unit_direction = unit_vector(r.direction);	// Versore del raggio
 		const float t = 0.5f * (unit_direction.y() + 1.0f);

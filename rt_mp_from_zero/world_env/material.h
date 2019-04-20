@@ -14,6 +14,7 @@ inline vec3 random_in_unit_sphere();
 // Classe material
 class material {
 public:
+	// Input parameters : { Raggio incidente, Record soluzione, Attenuazione, Raggio disperso }
 	virtual bool scatter(const ray& r_in, const intersec_record& rec, vec3& attenuation, ray& scattered) const = 0;
 };
 
@@ -21,6 +22,7 @@ public:
 class lambertian : public material {
 public:
 	lambertian(const vec3& a) : albedo(a) {}
+
 	virtual bool scatter(const ray& r_in, const intersec_record& rec, vec3& attenuation, ray& scattered) const {
 		vec3 target = rec.p + rec.normal + random_in_unit_sphere();
 		scattered = ray(rec.p, target - rec.p);
@@ -86,20 +88,21 @@ public:
 	float ref_idx;
 };
 
-// Prendo un cubo unitario all'interno del raggio della sfera e ne restituisco il normale
+// Restituisce un normale casuale sulla superficie di una sfera unitaria
 inline vec3 random_in_unit_sphere() {
 	vec3 p;
+
 	// Seed random point
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_real_distribution<float> dis(0.0f, 1.0f);
+	std::uniform_real_distribution<float> dis(-1.0f, 1.0f);
 
+	// Rejection method
 	do
 	{
-		p = 2.0f * vec3(dis(gen), dis(gen), dis(gen));
-		p -= vec3(1.0f, 1.0f, 1.0f);
-		p.make_unit_vector();	// Calcolo il normale
-	} while (p.squared_length() >= 1.0f);
+		p = vec3(dis(gen), dis(gen), dis(gen));	// Genero il vettore pseudocasuale
+		p.make_unit_vector();					// Calcolo il normale
+	} while (p.squared_length() >= 1.0f);		// Se la distanza al quadrato è maggiore del raggio al quadrato, reject
 	return p;
 }
 
