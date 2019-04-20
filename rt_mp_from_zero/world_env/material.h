@@ -86,9 +86,10 @@ public:
 	float ref_idx;
 };
 
-/* Prendo un cubo unitario all'interno del raggio della sfera e ne restituisco il normale */
+// Prendo un cubo unitario all'interno del raggio della sfera e ne restituisco il normale
 inline vec3 random_in_unit_sphere() {
 	vec3 p;
+	// Seed random point
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<float> dis(0.0f, 1.0f);

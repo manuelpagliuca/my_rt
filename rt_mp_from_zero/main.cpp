@@ -24,10 +24,12 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
 
 // Entry point
 int main(void) {
-	int const samples = 1024;   // Numero di samples da usare per pixel
-	int const width = 1920;	  // Righe di pixels
-	int const height = 1080;   // Colonne di pixels
-	int const n_objects = 8;  // Numero di oggetti geometrici
+	int const multi = 1;
+	int const width = multi * 800;	// Righe di pixels
+	int const height = multi * 600; // Colonne di pixels
+	int const n_objects = 8;		// Numero di oggetti geometrici
+	int const samples = 10;			// Numero di samples da usare per pixel
+
 	int y;
 
 	auto start = std::chrono::system_clock::now();
@@ -52,51 +54,68 @@ int main(void) {
 	// Impostazione settings della videocamera
 	const vec3 lookfrom(15.0f, 3.0f, 15.0f);
 	const vec3 lookat(0.0f, 2.0f, 0.0f);
+	const vec3 vup(0.0f, 1.0f, 0.0f);
 	const float dist_to_focus = 20.0f;
 	const float aperture = 0.1f;
-	
+	const float aspect = 20.0f;
+
 	// Dichiarazione e allocazione della videocamera
-	camera cam(lookfrom, lookat, vec3(0.0f, 1.0f, 0.0f), 20, float(width) / float(height), aperture, dist_to_focus);
+	camera cam(lookfrom, lookat, vup, aspect, float(width) / float(height), aperture, dist_to_focus);
 	
 	// Seed per generare un float casuale [0,1)
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 
-	// Devo scandire lo schermo Riga x Colonne
-#pragma omp parallel for
-	for (y = height - 1 ; y >= 0; y--)
-	{
-		fprintf(stderr, "\rRendering (%d spp) %5.2f%%", samples, 100.0f*float(height - y)/float(height));
 
-		for (int x = 0; x < width; x++)
+	/*
+		0,h------------------------------w,h   Punto di altezza&larghezza max
+		 -								  -
+		 -								  -
+		 -								  -
+		 -								  -
+		 -								  -
+		 -								  -
+		 -								  -
+		 -								  -
+		 -								  -
+		 0,0------------------------------w,0  
+		Sono necessari due cicli height x width
+	*/
+
+#pragma omp parallel for
+	for (y = height; y > 0; y--)		// Colonna
+	{
+		fprintf(stderr, "\rRendering (%d samples) %5.2f%%", samples, 100.0f*float(height - y)/float(height));
+
+		for (int x = 0; x < width; x++) // Riga
 		{	
-			// All'interno di questo scope si elabora un singolo pixel
-			vec3 col(0.0f, 0.0f, 0.0f);
-			for (int s = 0; s < samples; s++)
+			vec3 col(0.0f, 0.0f, 0.0f);	// Pixel
+			for (int s = 0; s < samples; s++)	// Campionamento sul singolo pixel
 			{
-				const float u = float(x + dis(gen)) / float(width);	 // offset-x
-				const float v = float(y + dis(gen)) / float(height); // offset-y
-				const ray r = cam.get_ray(u, v);
+				const float u = float(x + dis(gen)) / float(width);	 // Ordinata pseudo casuale
+				const float v = float(y + dis(gen)) / float(height); // Ascissa pseudo casuale
+				const ray r = cam.get_ray(u, v);	// La camera restituisce un raggio che attraversa il sample (o sub-pixel)
 				///vec3 p = r.point_at_parameter(2.0);
-				col += pixelColorFunction(r, world, 0); // Raccolta di tutti i samples all'interno
+				col += pixelColorFunction(r, world, 0); // Restituisco il colore di ciò che interseca il raggio nel sub-pixel casuale, il valore viene iterativamente accumulato all'interno del pixel.
 			}
-			col /= float(samples);	// Effettuo una media dei samples
+			col /= float(samples);	// Divido i colori accumulate nel pixel per il numero di samples utilizzati, effettuo quindi una media dei colori all'interno del pixel.
 
 			uint8_t ir = static_cast<uint8_t>(255.99f * sRGB(col.r()));	
 			uint8_t ig = static_cast<uint8_t>(255.99f * sRGB(col.g()));
 			uint8_t ib = static_cast<uint8_t>(255.99f * sRGB(col.b()));
-
+			// Memorizza la tripla del pixel nel vettore
 			image.push_back(ir);
 			image.push_back(ig);
-			image.push_back(ib);
+			image.push_back(ib); 
 		}
 	}
-	fprintf(stderr, "\rRendering (%d spp) %5.2f%%\n", samples, float(height - y) / float(height));
-
-	stbi_write_jpg("test.jpg", width, height, 3, image.data(), 100);
+	fprintf(stderr, "\rRendering (%d samples) %5.2f%%\n", samples, 100.0f*float(height - y) / float(height));
+	// Output image
+	stbi_write_jpg("output.jpg", width, height, 3, image.data(), 100);
 
 	auto end = std::chrono::system_clock::now();
+
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "It tooks " << elapsed_seconds.count() << " seconds \n\n\n";
 
