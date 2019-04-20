@@ -70,19 +70,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;C:\Users\Manuel\source\repos\manuelpagliuca\my_rt\rt_mp_from_zero\pcg;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;C:\Users\Manuel\source\repos\manuelpagliuca\my_rt\rt_mp_from_zero\pcg;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;C:\Users\Manuel\source\repos\manuelpagliuca\my_rt\rt_mp_from_zero\pcg;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\include;C:\Users\Manuel\source\repos\manuelpagliuca\my_rt\rt_mp_from_zero\pcg;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Manuel\source\repos\my_rt\rt_mp_from_zero\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -95,6 +95,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>true</OmitFramePointers>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,6 +111,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>true</OmitFramePointers>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,6 +127,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +145,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

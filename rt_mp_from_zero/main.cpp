@@ -25,8 +25,8 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
 // Entry point
 int main(void) {
 	//int const multi = 1;
-	int const width = 2048;			// Righe di pixels
-	int const height = 1080;		// Colonne di pixels
+	int const width = 800;			// Righe di pixels
+	int const height = 600;		// Colonne di pixels
 	int const n_objects = 8;		// Numero di oggetti geometrici
 	int const samples = 10;			// Numero di samples da usare per pixel
 
@@ -63,10 +63,9 @@ int main(void) {
 	camera cam(lookfrom, lookat, vup, aspect, float(width) / float(height), aperture, dist_to_focus);
 	
 	// Seed per generare un float casuale [0,1)
-	std::random_device rd;
-	std::mt19937 gen(rd());
+	pcg_extras::seed_seq_from<std::random_device> seed_source;
+	pcg32 rng(seed_source);
 	std::uniform_real_distribution<float> dis(0.0f, 1.0f);
-
 
 	/*
 		0,h------------------------------w,h   Punto di altezza&larghezza max
@@ -93,8 +92,8 @@ int main(void) {
 			vec3 col(0.0f, 0.0f, 0.0f);	// Pixel
 			for (int s = 0; s < samples; s++)	// Campionamento sul singolo pixel
 			{
-				const float u = float(x + dis(gen)) / float(width);	 // Ordinata pseudo casuale
-				const float v = float(y + dis(gen)) / float(height); // Ascissa pseudo casuale
+				const float u = float(x + dis(rng)) / float(width);	 // Ordinata pseudo casuale
+				const float v = float(y + dis(rng)) / float(height); // Ascissa pseudo casuale
 				const ray r = cam.get_ray(u, v);	// La camera restituisce un raggio che attraversa il sample (o sub-pixel)
 				///vec3 p = r.point_at_parameter(2.0);
 				col += pixelColorFunction(r, world, 0); // Restituisco il colore di ciò che interseca il raggio nel sub-pixel casuale, il valore viene iterativamente accumulato all'interno del pixel.

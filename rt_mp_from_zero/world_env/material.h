@@ -3,6 +3,7 @@
 #ifndef MATERIALH
 #define MATERIALH
 
+#include "pcg_random.hpp"
 #include "geometry.h"
 
 // Prototipi
@@ -24,9 +25,9 @@ public:
 	lambertian(const vec3& a) : albedo(a) {}
 
 	virtual bool scatter(const ray& r_in, const intersec_record& rec, vec3& attenuation, ray& scattered) const {
-		vec3 target =  rec.p + rec.normal + random_in_unit_sphere();	// Normale della soluzione randomizzato
-		scattered = ray(rec.p, target - rec.p);					// Origine: Vettore soluzione, Direzione: il negativo del vettore soluzione sfasato di qualche valore
-		attenuation = albedo;									// Su attenuazione salvo il colore dell'oggetto (&)
+		vec3 target =  rec.p + rec.normal + random_in_unit_sphere();// Normale della soluzione randomizzato
+		scattered = ray(rec.p, target - rec.p);						// Origine: Vettore soluzione, Direzione: il negativo del vettore soluzione sfasato di qualche valore
+		attenuation = albedo;										// Su attenuazione salvo il colore dell'oggetto (&)
 		return true;
 	}
 	vec3 albedo;
@@ -58,8 +59,8 @@ public:
 		float reflect_prob;
 		float cosine;
 
-		std::random_device rd;
-		std::mt19937 gen(rd());
+		pcg_extras::seed_seq_from<std::random_device> seed_source;
+		pcg32 rng(seed_source);
 		std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 
 		if (dot(r_in.direction, rec.normal) > 0.0f) {
@@ -78,7 +79,7 @@ public:
 			reflect_prob = schlick(cosine, ref_idx);
 		else
 			reflect_prob = 1.0f;
-		if (dis(gen) < reflect_prob)
+		if (dis(rng) < reflect_prob)
 			scattered = ray(rec.p, reflected);
 		else
 			scattered = ray(rec.p, refracted);
@@ -93,14 +94,14 @@ inline vec3 random_in_unit_sphere() {
 	vec3 p;
 
 	// Seed random point
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<float> dis(-1.0f, 1.0f);
+	pcg_extras::seed_seq_from<std::random_device> seed_source;
+	pcg32 rng(seed_source);
+	std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 
 	// Rejection method
 	do
 	{
-		p = vec3(dis(gen), dis(gen), dis(gen));	// Genero il vettore pseudocasuale
+		p = vec3(dis(rng), dis(rng), dis(rng));	// Genero il vettore pseudocasuale
 		p.make_unit_vector();					// Calcolo il normale
 	} while (p.squared_length() >= 1.0f);		// Se la distanza al quadrato è maggiore del raggio al quadrato, reject
 	return p;
