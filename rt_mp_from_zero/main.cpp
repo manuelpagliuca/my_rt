@@ -24,9 +24,9 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
 
 // Entry point
 int main(void) {
-	int const multi = 1;
-	int const width = multi * 800;	// Righe di pixels
-	int const height = multi * 600; // Colonne di pixels
+	//int const multi = 1;
+	int const width = 2048;			// Righe di pixels
+	int const height = 1080;		// Colonne di pixels
 	int const n_objects = 8;		// Numero di oggetti geometrici
 	int const samples = 10;			// Numero di samples da usare per pixel
 

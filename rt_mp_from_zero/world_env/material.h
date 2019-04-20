@@ -24,9 +24,9 @@ public:
 	lambertian(const vec3& a) : albedo(a) {}
 
 	virtual bool scatter(const ray& r_in, const intersec_record& rec, vec3& attenuation, ray& scattered) const {
-		vec3 target = rec.p + rec.normal + random_in_unit_sphere();
-		scattered = ray(rec.p, target - rec.p);
-		attenuation = albedo;
+		vec3 target =  rec.p + rec.normal + random_in_unit_sphere();	// Normale della soluzione randomizzato
+		scattered = ray(rec.p, target - rec.p);					// Origine: Vettore soluzione, Direzione: il negativo del vettore soluzione sfasato di qualche valore
+		attenuation = albedo;									// Su attenuazione salvo il colore dell'oggetto (&)
 		return true;
 	}
 	vec3 albedo;
@@ -117,7 +117,8 @@ bool refract(const vec3 & v, const vec3 & n, float ni_over_nt, vec3 & refracted)
 	const float dt = dot(uv, n);
 	const float discriminant = 1.0f - ni_over_nt * ni_over_nt * (1.0f - dt * dt);
 
-	if (discriminant > 0.) {
+	if (discriminant > 0.)
+	{
 		refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminant);
 		return true;
 	}
