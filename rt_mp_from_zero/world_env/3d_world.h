@@ -6,12 +6,14 @@
 class World : public Geometry {
 public:
 	// Costruttori
-	World() {
+	World() 
+	{
 		list = NULL;
 		size = 0;
 	}
 
-	World(Geometry** __list, int size_n) {
+	World(Geometry** __list, int size_n) 
+	{
 		list = __list;
 		size = size_n;
 	}

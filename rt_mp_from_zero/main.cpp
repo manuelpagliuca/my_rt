@@ -26,7 +26,7 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
 int main(void) {
 	//int const multi = 1;
 	int const width = 800;			// Righe di pixels
-	int const height = 600;		// Colonne di pixels
+	int const height = 600;			// Colonne di pixels
 	int const n_objects = 8;		// Numero di oggetti geometrici
 	int const samples = 10;			// Numero di samples da usare per pixel
 
@@ -44,7 +44,7 @@ int main(void) {
 	list[2] = new Sphere(vec3(-1.5f, 0.0f, -2.0f), 0.5f, new metal(vec3(0.2f, 0.5f, 0.9f)));
 	list[3] = new Sphere(vec3(0.0f, -50.5f, -1.0f), 50.0f, new lambertian(vec3(0.1f, 0.4f, 0.1f)));
 	list[4] = new Sphere(vec3(-2.0f, 0.8f, 0.0f), 1.4f, new lambertian(vec3(0.3f, 0.3f, 0.8f)));
-	list[5] = new Sphere(vec3(-0.8f, 1.8f, 4.0f), 2.6f, new dielectric(1.5f));  /// 2.417f
+	list[5] = new Sphere(vec3(-0.8f, 1.8f, 4.0f), 2.6f, new dielectric(1.5f));  /// 2.417f: diamond
 	list[6] = new Sphere(vec3(3.0f, 0.9f, -3.0f), 1.5f, new metal(vec3(0.4f, 0.7f, 0.1f)));
 	list[7] = new Sphere(vec3(-3.0f, 2.5f, -6.0f), 3.6f, new metal(vec3(0.1f, 0.1f, 0.1f)));
 
@@ -112,9 +112,9 @@ int main(void) {
 	fprintf(stderr, "\rRendering (%d samples) %5.2f%%\n", samples, 100.0f*float(height - y) / float(height));
 	// Output image
 	stbi_write_jpg("output.jpg", width, height, 3, image.data(), 100);
-
+	
+	// End time debugging
 	auto end = std::chrono::system_clock::now();
-
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "It tooks " << elapsed_seconds.count() << " seconds \n\n\n";
 

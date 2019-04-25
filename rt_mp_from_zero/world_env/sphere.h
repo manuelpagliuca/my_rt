@@ -62,7 +62,6 @@ bool Sphere::hit(const ray& r, const float t_min, const float t_max, intersec_re
 
 	}
 	return false;
-
 }
 
 #endif // !SPHEREH
