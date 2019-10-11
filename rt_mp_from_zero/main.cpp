@@ -5,19 +5,20 @@
 #include <iostream>
 
 // STB_IMAGE
-#include "stb\stb_image.h"
+#include "stb/stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb\stb_image_write.h"
+#include "stb/stb_image_write.h"
 
 // Time Debugging
 #include <chrono>
 #include <ctime>
+#include <float.h>
 
 // Project files
-#include "world_env\sphere.h"
-#include "world_env\3d_world.h"
-#include "world_env\material.h"
-#include "world_env\camera.h"
+#include "world_env/sphere.h"
+#include "world_env/3d_world.h"
+#include "world_env/material.h"
+#include "world_env/camera.h"
 
 // Prototipi
 inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth);
@@ -96,7 +97,7 @@ int main(void) {
 				const float v = float(y + dis(rng)) / float(height); // Ascissa pseudo casuale
 				const ray r = cam.get_ray(u, v);	// La camera restituisce un raggio che attraversa il sample (o sub-pixel)
 				///vec3 p = r.point_at_parameter(2.0);
-				col += pixelColorFunction(r, world, 0); // Restituisco il colore di ciò che interseca il raggio nel sub-pixel casuale, il valore viene iterativamente accumulato all'interno del pixel.
+				col += pixelColorFunction(r, world, 0); // Restituisco il colore di ciï¿½ che interseca il raggio nel sub-pixel casuale, il valore viene iterativamente accumulato all'interno del pixel.
 			}
 			col /= float(samples);	// Divido i colori accumulate nel pixel per il numero di samples utilizzati, effettuo quindi una media dei colori all'interno del pixel.
 
@@ -140,7 +141,7 @@ inline vec3 pixelColorFunction(const ray& r, Geometry* world, int depth)
 		//vec3 target = rec.p + rec.normal + random_in_unit_sphere();
 		//return 0.5f* color(ray(rec.p, target - rec.p), world);
 	}
-	else // Colorazione di cio che non è un oggetto
+	else // Colorazione di cio che non ï¿½ un oggetto
 	{
 		vec3 unit_direction = unit_vector(r.direction);	// Versore del raggio
 		const float t = 0.5f * (unit_direction.y() + 1.0f);

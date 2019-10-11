@@ -3,7 +3,7 @@
 #ifndef MATERIALH
 #define MATERIALH
 
-#include "pcg_random.hpp"
+#include "../pcg/pcg_random.hpp"
 #include "geometry.h"
 
 // Prototipi
@@ -41,7 +41,7 @@ public:
 		vec3 reflected = reflect(unit_vector(r_in.direction), rec.normal); // Vettore riflesso = (Direzione unitaria del raggio incidente, Normale della soluzione)
 		scattered = ray(rec.p, reflected);								   // Nel raggio disperso si memorizza un raggio che ha origine dalla soluzione e direzione verso il raggio riflesso
 		attenuation = albedo;											   // Nell'attenuazione si salva il colore della classe
-		return (dot(scattered.direction, rec.normal) > 0);				   // Restituisce true se il prodotto scalare tra la direzione del raggio dispesso e il vettore normale è > 0
+		return (dot(scattered.direction, rec.normal) > 0);				   // Restituisce true se il prodotto scalare tra la direzione del raggio dispesso e il vettore normale ï¿½ > 0
 	}
 	vec3 albedo;
 };
@@ -57,7 +57,7 @@ public:
 		vec3 outward_normal;										// Normale esterno
 		vec3 refracted;												// Vettore rifratto
 		float ni_over_nt;		// IndiceIncidente / IndicePassante
-		float reflect_prob;		// Probabilità di riflessione
+		float reflect_prob;		// Probabilitï¿½ di riflessione
 		float cosine;			// Coseno
 
 		attenuation = vec3(1.0f, 1.0f, 1.0f); // Set dell' attenuazione, il vetro non assorbe nessun colore
@@ -67,7 +67,7 @@ public:
 		pcg32 rng(seed_source);
 		std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 		
-		if (dot(r_in.direction, rec.normal) > 0.0f) // -90° < Angle < 90°
+		if (dot(r_in.direction, rec.normal) > 0.0f) // -90ï¿½ < Angle < 90ï¿½
 		{
 			outward_normal = -rec.normal;	// Normale Interno (verso invertito)
 			ni_over_nt = ref_idx;			// IdxMateriale (only)
@@ -75,7 +75,7 @@ public:
 			cosine = dot(r_in.direction, rec.normal) / r_in.direction.length();
 			cosine = sqrtf(1.0f - ref_idx * ref_idx * (1.0f - cosine * cosine));
 		}
-		else // Se l'angolo è ottuso o retto										
+		else // Se l'angolo ï¿½ ottuso o retto										
 		{
 			// Il raggio attraversa la sfera
 			outward_normal = rec.normal;	// Normale Esterno
@@ -85,7 +85,7 @@ public:
 		if (refract(r_in.direction, outward_normal, ni_over_nt, refracted))	//
 			reflect_prob = schlick(cosine, ref_idx);
 		else
-			reflect_prob = 1.0f;	// Probabilità di riflesso 1.0f se non rifratto
+			reflect_prob = 1.0f;	// Probabilitï¿½ di riflesso 1.0f se non rifratto
 		if (dis(rng) < reflect_prob)
 			scattered = ray(rec.p, reflected);
 		else
@@ -110,13 +110,13 @@ inline vec3 random_in_unit_sphere() {
 	{
 		p = vec3(dis(rng), dis(rng), dis(rng));	// Genero il vettore pseudocasuale
 		p.make_unit_vector();					// Calcolo il normale
-	} while (p.squared_length() >= 1.0f);		// Se la distanza al quadrato è maggiore del raggio al quadrato, reject
+	} while (p.squared_length() >= 1.0f);		// Se la distanza al quadrato ï¿½ maggiore del raggio al quadrato, reject
 	return p;
 }
 
 // Riflessione - {Snell's Law}
 inline const vec3 reflect(const vec3 & v_in, const vec3 & n) {
-	return v_in - 2.0f * dot(v_in, n) * n;	// Poichè v punta verso l'interno della sfera, ad esso si sottrae il doppio prodotto scalare di v rispetto a n.
+	return v_in - 2.0f * dot(v_in, n) * n;	// Poichï¿½ v punta verso l'interno della sfera, ad esso si sottrae il doppio prodotto scalare di v rispetto a n.
 }
 
 // Rifrazione - {Snell's Law}

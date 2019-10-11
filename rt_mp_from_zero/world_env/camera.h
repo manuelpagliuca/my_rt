@@ -2,7 +2,6 @@
 #ifndef CAMERAH
 
 #define CAMERAH
-#define M_PI 3.14159265359f
 #include "ray.h"
 
 vec3 random_in_unit_disk() {

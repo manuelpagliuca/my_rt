@@ -8,7 +8,7 @@ class Sphere : public Geometry {
 public:
 	// Costruttori
 	Sphere() {
-		center = NULL;
+		center = vec3(0.0f, 0.0f, 0.0f);
 		radius = 0.0f;
 		mat_ptr = NULL;
 	}
